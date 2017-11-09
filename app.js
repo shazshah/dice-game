@@ -33,6 +33,7 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
         if (diceOne > 1 || diceTwo > 1) {
             //check if two sixes are rolled.
             if(diceOne === 6 || diceTwo === 6){
+                //add score
                 previousDice += 1
                 if(previousDice != 2) {
                     roundScore += diceOne;
