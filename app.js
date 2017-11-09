@@ -9,15 +9,15 @@ GAME RULES:
 
 */
 
-var scores, roundScores, activePlayer, gamePlaying, previousDice;
+var scores, roundScores, activePlayer, gamePlaying, previousDice, userScoreChoice;
 
 init();
 
-
 document.querySelector('.btn-roll').addEventListener('click', function() {
     if(gamePlaying) {
+        userScoreChoice = document.getElementById("scoreToReach").value;
         // 1. Random number
-        var dice = Math.floor(Math.random() * 6) +1; 
+        var dice = Math.floor(Math.random() * 6) + 1; 
 
         //2. display the result
         var diceDOM = document.querySelector('.dice');
@@ -26,10 +26,15 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
 
         //3. Update the round score IF the rolled number was NOT a 1
         if (dice > 1) {
-            //add score
+            //check if two sixes are rolled.
             if(dice === 6){
                 previousDice += 1
+                if(previousDice != 2) {
+                    roundScore += dice;
+                    document.querySelector('#current-' + activePlayer).textContent = roundScore;
+                }
             } else if (previousDice != 2){
+                //add score
                 roundScore += dice;
                 document.querySelector('#current-' + activePlayer).textContent = roundScore;
             } else {
@@ -54,7 +59,7 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
         // Check if the player won the game
-        if (scores[activePlayer] >= 15) {
+        if (scores[activePlayer] >= userScoreChoice) {
             document.querySelector('#name-' + activePlayer).textContent = "Winner!";
             document.querySelector('.dice').style.display = 'none';
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
@@ -72,6 +77,7 @@ function nextPlayer() {
     //next player
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
     roundScore = 0;
+    previousDice = 0;
 
     document.getElementById('current-0').textContent = '0';
     document.getElementById('current-1').textContent = '0';
@@ -89,6 +95,8 @@ function init() {
     roundScore = 0;
     activePlayer = 0;
     gamePlaying = true;
+
+    userScoreChoice = 15;
 
     previousDice = 0;
 
